@@ -1,0 +1,1 @@
+export { nestedFunction } from "./nested";

@@ -1,0 +1,2 @@
+export const BASIC_CONST_SINGLE_EXPORT = 42;
+export let BASIC_LET_SINGLE_EXPORT = 42;
