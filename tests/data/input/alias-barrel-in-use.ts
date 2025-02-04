@@ -1,18 +1,21 @@
 import {
   BASIC_CONST,
+  BASIC_CONST_SINGLE_EXPORT,
+  BASIC_LET,
+  BASIC_LET_SINGLE_EXPORT,
+  BASIC_VAR,
   BasicClass,
   BasicEnum,
   BasicInterface,
-  type BasicType,
-  BASIC_LET,
-  BASIC_VAR,
+  ReExportedBasicConstToExport,
+  ReExportedBasicType,
   RenamedBasicClass,
-  RexportedBasicConstToExport,
-  RexportedBasicType,
+  basicFunction as basicFunctionWithAs,
   basicFunction,
+  type BasicType,
 } from "@barrel-basic";
 
 import { CircularA, CircularB } from '@barrel-circular';
 
-import { nestedFunction } from "@barrel-nested";
-import { SECRET } from "@ignored";
+import { nestedConstant ,nestedFunction } from "@barrel-nested"
+import { SECRET } from "@ignored"

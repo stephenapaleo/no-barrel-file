@@ -7,8 +7,8 @@ import {
   BASIC_LET,
   BASIC_VAR,
   RenamedBasicClass,
-  RexportedBasicConstToExport,
-  RexportedBasicType,
+  ReExportedBasicConstToExport,
+  ReExportedBasicType,
   basicFunction,
 } from "@barrel-basic";
 

@@ -18,7 +18,7 @@ import (
 
 var (
 	// import type { ModuleName } from 'module' || import { ModuleName } from 'module'
-	ImportLineRX  = regexp.MustCompile(`import\s+(type {[^}]+}|{[^}]+})\s+from\s+(['"])([^'"]+)['"]`)
+	ImportLineRX  = regexp.MustCompile(`import\s+(type {[^}]+}|{[^}]+})\s+from\s+(['"])([^'"]+)['"](;?)`)
 	TypeImportRX  = regexp.MustCompile(`type\s+[{]?\s*(\w+)`) // type { exportName }
 	AliasImportRX = regexp.MustCompile(`(\w+)\s+as\s+\w+`)    // exportName as Alias
 )
@@ -97,6 +97,7 @@ func replaceBarrelImports(cmd *cobra.Command, config ReplaceConfig) int {
 			importNames := strings.Split(matches[1], ",")
 			quoteSymbol := matches[2]
 			importPath := matches[3]
+			endSymbol := matches[4]
 			isAliasPath := strings.HasPrefix(importPath, "@")
 			var resolvedPathKey string
 			if isAliasPath {
@@ -123,12 +124,15 @@ func replaceBarrelImports(cmd *cobra.Command, config ReplaceConfig) int {
 					newImportPath := filepath.Join(resolvedPathKey, resolvedModulePath)
 					if !isAliasPath {
 						newImportPath = filepath.Join(importPath, resolvedModulePath)
-						if !strings.HasPrefix(importPath, "./") {
+						if !strings.HasPrefix(newImportPath, "./") && !strings.HasPrefix(newImportPath, "../") {
 							newImportPath = "./" + newImportPath
 						}
 					}
 
-					orderedImportPaths = append(orderedImportPaths, newImportPath)
+					if _, exists := importsByModule[newImportPath]; !exists {
+						orderedImportPaths = append(orderedImportPaths, newImportPath)
+					}
+
 					importsByModule[newImportPath] = append(importsByModule[newImportPath], importName)
 				}
 			}
@@ -153,7 +157,7 @@ func replaceBarrelImports(cmd *cobra.Command, config ReplaceConfig) int {
 				}
 
 				newImportStatement = strings.TrimSuffix(newImportStatement, ", ")
-				newImportStatement += fmt.Sprintf(" } from %s%s%s", quoteSymbol, resolvedPath, quoteSymbol)
+				newImportStatement += fmt.Sprintf(" } from %s%s%s%s", quoteSymbol, resolvedPath, quoteSymbol, endSymbol)
 				replacedImports = append(replacedImports, newImportStatement)
 			}
 

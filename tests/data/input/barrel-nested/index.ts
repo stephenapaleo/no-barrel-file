@@ -1,1 +1,1 @@
-export { nestedFunction } from "./nested";
+export * from "./nested";

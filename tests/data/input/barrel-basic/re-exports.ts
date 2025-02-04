@@ -4,8 +4,8 @@ export { BasicClass as RenamedBasicClass };
 
 import { BasicType } from "./types";
 
-type RexportedBasicType = BasicType;
-export type { RexportedBasicType };
+type ReExportedBasicType = BasicType;
+export type { ReExportedBasicType };
 
-const RexportedBasicConstToExport = 42;
-export { RexportedBasicConstToExport };
+const ReExportedBasicConstToExport = 42;
+export { ReExportedBasicConstToExport };
