@@ -1,13 +1,45 @@
 # No Barrel File CLI
 
+![GitHub Release](https://img.shields.io/github/v/release/nergie/no-barrel-file?style=for-the-badge) &nbsp;
+![GitHub Release Date](https://img.shields.io/github/release-date/nergie/no-barrel-file?display_date=published_at&style=for-the-badge) &nbsp;
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/nergie/no-barrel-file/build-and-deploy.yml?branch=main&style=for-the-badge&label=deploy)
+
+---
+
 `no-barrel-file` is a CLI tool for removing barrel file imports in JavaScript/TypeScript projects. It efficiently replaces barrel imports with full paths, counts and displays barrel files in folders, and supports alias paths, gitignore rules, and the handling of nested or circular barrel structures.
 
 ![Demo GIF](./assets/demo.gif)
 
-Using `no-barrel-file` to remove barrel files from your project can significantly improve your app’s runtime, build-time and test-time performance.  
-For more information, I recommend reading [Speeding up the JavaScript ecosystem - The barrel file debacle](https://marvinh.dev/blog/speeding-up-javascript-ecosystem-part-7/).
+Using `no-barrel-file` to remove barrel files from your project can significantly improve your app’s runtime, build-time and test-time performance.
+For more details, reading [Speeding up the JavaScript ecosystem - The barrel file debacle](https://marvinh.dev/blog/speeding-up-javascript-ecosystem-part-7/) is recommended.
 
 ---
+
+<!-- TOC start (generated with https://github.com/derlin/bitdowntoc) -->
+
+- [No Barrel File CLI](#no-barrel-file-cli)
+  - [Features](#features)
+  - [**🔧 Installation**](#-installation)
+    - [**Installation With Golang (Recommended)**](#installation-with-golang-recommended)
+    - [**Installation With Docker**](#installation-with-docker)
+  - [Usage](#usage)
+    - [General Command Structure](#general-command-structure)
+    - [**🔗 Available Commands**](#-available-commands)
+    - [**🌟 Flags**](#-flags)
+      - [Global Flags](#global-flags)
+      - [replace Command Flags](#replace-command-flags)
+    - [**Count barrel files**](#count-barrel-files)
+    - [**Display all barrel files**](#display-all-barrel-files)
+    - [**Replace imports of a specific barrel file**](#replace-imports-of-a-specific-barrel-file)
+    - [**replace all barrel file imports**](#replace-all-barrel-file-imports)
+  - [**Run the CLI inside a Docker container**](#run-the-cli-inside-a-docker-container)
+    - [**Count barrel files**](#count-barrel-files-1)
+    - [**Display all barrel files**](#display-all-barrel-files-1)
+    - [**Replace imports of a barrel file**](#replace-imports-of-a-barrel-file)
+    - [**replace all barrel file imports**](#replace-all-barrel-file-imports-1)
+  - [License](#license)
+
+## <!-- TOC end -->
 
 ## Features
 
@@ -19,62 +51,22 @@ For more information, I recommend reading [Speeding up the JavaScript ecosystem 
 
 ---
 
-## **⚡ Quick Start**
+## **🔧 Installation**
 
-### **1️⃣ Install with Docker**
-
-```sh
-docker pull nergie42/no-barrel-file
-```
-
-### **2️⃣ Run the CLI inside a Docker container**
-
-#### **Count barrel files**
-
-```sh
-# Navigate to the root directory of your project
-cd root-path
-docker run --rm -v $(pwd):/app nergie42/no-barrel-file count --root-path /app
-```
-
-#### **Display all barrel files**
-
-```sh
-docker run --rm -v $(pwd):/app nergie42/no-barrel-file display --root-path /app
-```
-
-#### **Replace imports of a barrel file**
-
-```sh
-docker run --rm -v $(pwd):/app nergie42/no-barrel-file replace --root-path /app --alias-config-path tsconfig.json --barrel-path src/index.ts -v
-```
-
-#### **replace all barrel file imports**
-
-```sh
-docker run --rm -v $(pwd):/app nergie42/no-barrel-file replace --root-path /app --alias-config-path tsconfig.json
-```
-
----
-
-## **🔧 Installation (Without Docker)**
-
-If you prefer to install the CLI directly:
-
-### **1️⃣ Install Go**
+### **Installation With Golang (Recommended)**
 
 Ensure you have Go installed (`go1.23+` recommended).
 
-### **2️⃣ Install the CLI**
-
-```bash
+```sh
 go install github.com/nergie/no-barrel-file@latest
 ```
 
-### **3️⃣ Run the CLI**
+### **Installation With Docker**
 
-```bash
-no-barrel-file --help
+Ensure you have Docker installed.
+
+```sh
+docker pull nergie42/no-barrel-file:latest
 ```
 
 ---
@@ -83,7 +75,7 @@ no-barrel-file --help
 
 ### General Command Structure
 
-```bash
+```sh
 no-barrel-file [command] [flags]
 ```
 
@@ -114,6 +106,63 @@ no-barrel-file [command] [flags]
 | `--barrel-path, -b`       | Relative path of a barrel file import to replaced.                                                           | `.`     |
 | `--target-path, -t`       | Relative path where imports should be replaced.                                                              | `.`     |
 | `--verbose, -v`           | Enable verbose output for detailed logs.                                                                     | None    |
+
+### **Count barrel files**
+
+```sh
+no-barrel-file count --root-path .
+```
+
+### **Display all barrel files**
+
+```sh
+no-barrel-file display --root-path .
+```
+
+### **Replace imports of a specific barrel file**
+
+```sh
+no-barrel-file replace --root-path . --alias-config-path tsconfig.json --barrel-path src/index.ts
+```
+
+### **replace all barrel file imports**
+
+```sh
+no-barrel-file replace --root-path . --alias-config-path tsconfig.json
+```
+
+---
+
+## **Run the CLI inside a Docker container**
+
+[Docker registry](https://hub.docker.com/r/nergie42/no-barrel-file)  
+⚠ It is recommended to install using Go instead of Docker, as Docker can increase execution time when mounting directories with many files.
+
+### **Count barrel files**
+
+```sh
+# Navigate to the root directory of your project
+cd root-path
+docker run --rm -v $(pwd):/app --platform linux/amd64 nergie42/no-barrel-file count --root-path /app
+```
+
+### **Display all barrel files**
+
+```sh
+docker run --rm -v $(pwd):/app --platform linux/amd64 nergie42/no-barrel-file display --root-path /app
+```
+
+### **Replace imports of a barrel file**
+
+```sh
+docker run --rm -v $(pwd):/app --platform linux/amd64 nergie42/no-barrel-file replace --root-path /app --alias-config-path tsconfig.json --barrel-path src/index.ts -v
+```
+
+### **replace all barrel file imports**
+
+```sh
+docker run --rm -v $(pwd):/app --platform linux/amd64 nergie42/no-barrel-file replace --root-path /app --alias-config-path tsconfig.json
+```
 
 ---
 
