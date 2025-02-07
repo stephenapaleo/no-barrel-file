@@ -48,7 +48,7 @@ func getAliasPaths(rootPath string, tsConfigPath *string) map[string]string {
 	}
 
 	if tsConfig.CompilerOptions.BaseUrl == "" {
-		tsConfig.CompilerOptions.BaseUrl = "."
+		tsConfig.CompilerOptions.BaseUrl = filepath.Dir(tsConfigFullPath)
 	}
 	baseUrlPath := filepath.Dir(filepath.Join(tsConfigFullPath, tsConfig.CompilerOptions.BaseUrl))
 
