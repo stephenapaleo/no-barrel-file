@@ -159,8 +159,8 @@ func getBarrelModulePaths(filePath string, extensions []string) []string {
 				}
 			} else {
 				for _, extension := range extensions {
-					path = path + extension
-					if _, err := os.Stat(path); err == nil {
+					pathWithExtension := path + extension
+					if _, err := os.Stat(pathWithExtension); err == nil {
 						modulePaths = append(modulePaths, modulePath+extension)
 						break
 					}

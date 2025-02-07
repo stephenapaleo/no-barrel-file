@@ -8,6 +8,8 @@ import { basicFunction as basicFunctionWithAs, basicFunction } from "./barrel-ba
 import { CircularA } from './barrel-circular/circular-a';
 import { CircularB } from './barrel-circular/circular-b';
 
+import { Button } from "./barrel-nested/Buttons/button"
+import { ButtonProps } from "./barrel-nested/Buttons/button.type"
 import { nestedConstant } from "./barrel-nested/nested-constant"
 import { nestedFunction } from "./barrel-nested/nested/nested-function"
 import { SECRET } from "./ignored"

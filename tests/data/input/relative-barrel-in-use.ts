@@ -17,5 +17,5 @@ import {
 
 import { CircularA, CircularB } from './barrel-circular';
 
-import { nestedConstant, nestedFunction } from "./barrel-nested"
+import { Button, ButtonProps, nestedConstant, nestedFunction } from "./barrel-nested"
 import { SECRET } from "./ignored"

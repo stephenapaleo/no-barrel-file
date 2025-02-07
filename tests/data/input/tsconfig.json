@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "baseUrl": "./",
+    "jsx": "preserve",
     "paths": {
       "@barrel-basic/*": ["./barrel-basic/*"],
       "@barrel-circular/*": ["./barrel-circular/*"],

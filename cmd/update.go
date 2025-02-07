@@ -18,9 +18,9 @@ import (
 
 var (
 	// import type { ModuleName } from 'module' || import { ModuleName } from 'module'
-	ImportLineRX  = regexp.MustCompile(`import\s+(type {[^}]+}|{[^}]+})\s+from\s+(['"])([^'"]+)['"](;?)`)
-	TypeImportRX  = regexp.MustCompile(`type\s+[{]?\s*(\w+)`) // type { exportName }
-	AliasImportRX = regexp.MustCompile(`(\w+)\s+as\s+\w+`)    // exportName as Alias
+	NamedImportLineRX = regexp.MustCompile(`import\s+(type {[^}]+}|{[^}]+})\s+from\s+(['"])([^'"]+)['"](;?)`)
+	TypeImportRX      = regexp.MustCompile(`type\s+[{]?\s*(\w+)`) // type { exportName }
+	AliasImportRX     = regexp.MustCompile(`(\w+)\s+as\s+\w+`)    // exportName as Alias
 )
 
 type ReplaceConfig struct {
@@ -88,8 +88,8 @@ func replaceBarrelImports(cmd *cobra.Command, config ReplaceConfig) int {
 			return nil
 		}
 
-		updatedContents := ImportLineRX.ReplaceAllStringFunc(string(contents), func(importStatement string) string {
-			matches := ImportLineRX.FindStringSubmatch(importStatement)
+		updatedContents := NamedImportLineRX.ReplaceAllStringFunc(string(contents), func(importStatement string) string {
+			matches := NamedImportLineRX.FindStringSubmatch(importStatement)
 			if len(matches) < 4 {
 				return importStatement
 			}
