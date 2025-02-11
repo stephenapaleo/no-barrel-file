@@ -120,21 +120,24 @@ func replaceBarrelImports(cmd *cobra.Command, config ReplaceConfig) int {
 					continue
 				}
 				moduleName := getModuleName(importName)
-				if resolvedModulePath, exists := barrelResolvedPaths.ResolveModuleName(resolvedPathKey, moduleName); exists {
-					newImportPath := filepath.Join(resolvedPathKey, resolvedModulePath)
+				resolvedModulePath, exists := barrelResolvedPaths.ResolveModuleName(resolvedPathKey, moduleName)
+				var newImportPath string
+				if exists {
+					newImportPath = filepath.Join(resolvedPathKey, resolvedModulePath)
 					if !isAliasPath {
 						newImportPath = filepath.Join(importPath, resolvedModulePath)
 						if !strings.HasPrefix(newImportPath, "./") && !strings.HasPrefix(newImportPath, "../") {
 							newImportPath = "./" + newImportPath
 						}
 					}
-
-					if _, exists := importsByModule[newImportPath]; !exists {
-						orderedImportPaths = append(orderedImportPaths, newImportPath)
-					}
-
-					importsByModule[newImportPath] = append(importsByModule[newImportPath], importName)
+				} else {
+					newImportPath = importPath
 				}
+				if _, exists := importsByModule[newImportPath]; !exists {
+					orderedImportPaths = append(orderedImportPaths, newImportPath)
+				}
+
+				importsByModule[newImportPath] = append(importsByModule[newImportPath], importName)
 			}
 
 			for _, resolvedPath := range orderedImportPaths {
