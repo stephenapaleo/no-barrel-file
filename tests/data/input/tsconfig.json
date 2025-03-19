@@ -6,7 +6,7 @@
       "@barrel-basic/*": ["./barrel-basic/*"],
       "@barrel-circular/*": ["./barrel-circular/*"],
       "@barrel-nested/*": ["./barrel-nested/*"],
-      "@ignored/*": ["./ignored/*"]
+      "@ignored/*": ["./ignored/*"],
     }
   }
 }
