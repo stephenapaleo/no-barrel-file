@@ -11,7 +11,7 @@
 ![Demo GIF](./assets/demo.gif)
 
 Using `no-barrel-file` to remove barrel files from your project can significantly improve your app’s runtime, build-time and test-time performance.
-For more details, reading [Speeding up the JavaScript ecosystem - The barrel file debacle](https://marvinh.dev/blog/speeding-up-javascript-ecosystem-part-7/) is recommended.
+For more details, reading [Barrel files and why you should STOP using them now](https://dev.to/tassiofront/barrel-files-and-why-you-should-stop-using-them-now-bc4) or [Speeding up the JavaScript ecosystem - The barrel file debacle](https://marvinh.dev/blog/speeding-up-javascript-ecosystem-part-7/) is recommended.
 
 ---
 
