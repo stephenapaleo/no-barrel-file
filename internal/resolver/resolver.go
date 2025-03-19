@@ -6,6 +6,8 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/tailscale/hujson"
 )
 
 type Resolver struct {
@@ -33,15 +35,20 @@ func getAliasPaths(rootPath string, tsConfigPath *string) map[string]string {
 		return aliasPaths
 	}
 	tsConfigFullPath := filepath.Join(rootPath, *tsConfigPath)
-	file, err := os.Open(tsConfigFullPath)
+	file, err := os.ReadFile(tsConfigFullPath)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error opening tsconfig file: %v\n", err)
 		return nil
 	}
-	defer file.Close()
+
+	b, err := hujson.Standardize(file)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error parsing tsconfig: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Ignoring tsconfig file\n")
+	}
 
 	var tsConfig TSConfig
-	if err := json.NewDecoder(file).Decode(&tsConfig); err != nil {
+	if err := json.Unmarshal(b, &tsConfig); err != nil {
 		fmt.Fprintf(os.Stderr, "Error parsing tsconfig: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Ignoring tsconfig file\n")
 		return nil
