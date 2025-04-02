@@ -61,10 +61,10 @@ func init() {
 func replaceBarrelImports(cmd *cobra.Command, config ReplaceConfig) int {
 	resolver := resolver.New(config.rootPath, &config.aliasConfigPath)
 	ignorer := ignorer.New(config.rootPath, config.ignorePaths, config.gitIgnorePath)
-	parserRootPath := filepath.Join(config.rootPath, config.barrelPath)
+	parserRootPath := joinCrossPlatformPaths(config.rootPath, config.barrelPath)
 	parser := parser.New(parserRootPath, ignorer, config.extensions)
 	barrelResolvedPaths := data.NewBarrelResolvedPath(parser, resolver)
-	targetFullPath := filepath.Join(config.rootPath, config.targetPath)
+	targetFullPath := joinCrossPlatformPaths(config.rootPath, config.targetPath)
 	updatedFilesTotal := 0
 
 	filepath.Walk(targetFullPath, func(path string, info os.FileInfo, err error) error {
@@ -103,7 +103,7 @@ func replaceBarrelImports(cmd *cobra.Command, config ReplaceConfig) int {
 			if isAliasPath {
 				resolvedPathKey = importPath
 			} else {
-				resolvedPathKey = filepath.Join(filepath.Dir(path), importPath)
+				resolvedPathKey = joinCrossPlatformPaths(filepath.Dir(path), importPath)
 			}
 
 			if !barrelResolvedPaths.IsResolved(resolvedPathKey) {
@@ -123,9 +123,9 @@ func replaceBarrelImports(cmd *cobra.Command, config ReplaceConfig) int {
 				resolvedModulePath, exists := barrelResolvedPaths.ResolveModuleName(resolvedPathKey, moduleName)
 				var newImportPath string
 				if exists {
-					newImportPath = filepath.Join(resolvedPathKey, resolvedModulePath)
+					newImportPath = joinCrossPlatformPaths(resolvedPathKey, resolvedModulePath)
 					if !isAliasPath {
-						newImportPath = filepath.Join(importPath, resolvedModulePath)
+						newImportPath = joinCrossPlatformPaths(importPath, resolvedModulePath)
 						if !strings.HasPrefix(newImportPath, "./") && !strings.HasPrefix(newImportPath, "../") {
 							newImportPath = "./" + newImportPath
 						}
@@ -197,4 +197,8 @@ func getModuleName(line string) string {
 	}
 
 	return line
+}
+
+func joinCrossPlatformPaths(elem ...string) string {
+	return filepath.ToSlash(filepath.Join(elem...))
 }
