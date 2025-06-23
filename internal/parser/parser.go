@@ -130,7 +130,7 @@ func (parser *Parser) getBarrelDirsWithModulePaths() map[string][]string {
 		if !info.IsDir() && isIndexFile(path, parser.extensions) {
 			modulePaths := getBarrelModulePaths(path, parser.extensions)
 			if len(modulePaths) > 0 {
-				dirPath := filepath.Dir(path)
+				dirPath := filepath.ToSlash(filepath.Dir(path))
 				barrelDirsWithModulePaths[dirPath] = modulePaths
 			}
 		}
@@ -155,13 +155,13 @@ func getBarrelModulePaths(filePath string, extensions []string) []string {
 			path := filepath.Join(filepath.Dir(filePath), modulePath)
 			if info, err := os.Stat(path); err == nil {
 				if info.IsDir() {
-					modulePaths = append(modulePaths, modulePath)
+					modulePaths = append(modulePaths, filepath.ToSlash(modulePath))
 				}
 			} else {
 				for _, extension := range extensions {
 					pathWithExtension := path + extension
 					if _, err := os.Stat(pathWithExtension); err == nil {
-						modulePaths = append(modulePaths, modulePath+extension)
+						modulePaths = append(modulePaths, filepath.ToSlash(modulePath+extension))
 						break
 					}
 				}
